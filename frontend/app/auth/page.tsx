@@ -2,7 +2,7 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { FiLock, FiMail, FiUser } from "react-icons/fi";
+import { FiEye, FiEyeOff, FiLock, FiMail, FiUser } from "react-icons/fi";
 import { loginAccount, registerAccount } from "../../lib/api";
 import { useApiRequest } from "../../lib/useApiRequest";
 import { storeAuthSession } from "../../lib/auth";
@@ -24,6 +24,8 @@ export default function AuthPage() {
   const [mode, setMode] = useState<AuthMode>("register");
   const [formState, setFormState] = useState(initialState);
   const [formError, setFormError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     execute: executeRegister,
@@ -140,12 +142,20 @@ export default function AuthPage() {
               <FiLock className="text-emerald-500" />
               <input
                 required
-                type="password"
+                type={showPassword ? "text" : "password"}
                 value={formState.password}
                 onChange={(event) => setFormState((prev) => ({ ...prev, password: event.target.value }))}
                 placeholder="Minimal 8 karakter"
                 className="w-full bg-transparent text-sm text-emerald-900 focus:outline-none"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="text-emerald-500 transition-colors hover:text-emerald-600"
+                aria-label={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
             </div>
           </label>
 
@@ -156,7 +166,7 @@ export default function AuthPage() {
                 <FiLock className="text-emerald-500" />
                 <input
                   required
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   value={formState.confirmPassword}
                   onChange={(event) =>
                     setFormState((prev) => ({ ...prev, confirmPassword: event.target.value }))
@@ -164,6 +174,16 @@ export default function AuthPage() {
                   placeholder="Ulangi kata sandi"
                   className="w-full bg-transparent text-sm text-emerald-900 focus:outline-none"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className="text-emerald-500 transition-colors hover:text-emerald-600"
+                  aria-label={
+                    showConfirmPassword ? "Sembunyikan konfirmasi kata sandi" : "Tampilkan konfirmasi kata sandi"
+                  }
+                >
+                  {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+                </button>
               </div>
             </label>
           ) : null}
