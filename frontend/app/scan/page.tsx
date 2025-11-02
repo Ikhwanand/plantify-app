@@ -95,7 +95,7 @@ export default function ScanPage() {
 
             {error ? (
               <p className="text-sm text-red-600">
-                Gagal mengunggah foto. Pastikan backend di http://localhost:8000/api aktif lalu coba lagi.
+                Gagal mengunggah foto. 
               </p>
             ) : null}
           </div>
@@ -125,18 +125,20 @@ export default function ScanPage() {
               type="button"
               onClick={handleSubmit}
               disabled={!isReadyToSubmit}
-              className="flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-white font-semibold shadow-lg shadow-emerald-200 transition-transform hover:-translate-y-0.5 disabled:pointer-events-none disabled:opacity-60"
+              aria-live="polite"
+              aria-busy={loading}
+              className="flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-white font-semibold shadow-lg shadow-emerald-200 transition-transform hover:-translate-y-0.5 disabled:pointer-events-none disabled:opacity-60"
             >
               {loading ? (
-                <>
-                  <FiLoader className="animate-spin" />
-                  Mengirim ke Vision AI...
-                </>
+                <span key="loading" className="flex items-center gap-2">
+                  <FiLoader className="animate-spin" aria-hidden="true" focusable="false" />
+                  <span>Mengirim ke Vision AI...</span>
+                </span>
               ) : (
-                <>
-                  <FiCheckCircle />
-                  Lanjutkan ke Checklist
-                </>
+                <span key="idle" className="flex items-center gap-2">
+                  <FiCheckCircle aria-hidden="true" focusable="false" />
+                  <span>Lanjutkan ke Checklist</span>
+                </span>
               )}
             </button>
 
